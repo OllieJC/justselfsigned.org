@@ -1,0 +1,7 @@
+**/.terraform/
+**/.terraform.lock*
+**/*.pem
+**/*.key
+terraform/**/*.json
+**/*.sig
+**/generated*

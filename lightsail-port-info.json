@@ -1,0 +1,23 @@
+[
+  {
+    "fromPort": 80,
+    "toPort": 80,
+    "protocol": "tcp"
+  },
+  {
+    "fromPort": 443,
+    "toPort": 443,
+    "protocol": "tcp"
+  },
+  {
+    "fromPort": 443,
+    "toPort": 443,
+    "protocol": "udp"
+  },
+  {
+    "fromPort": 22,
+    "toPort": 22,
+    "protocol": "tcp",
+    "cidrListAliases": ["lightsail-connect"]
+  }
+]
