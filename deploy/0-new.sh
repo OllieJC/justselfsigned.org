@@ -106,7 +106,7 @@ log "generating new SSC pre-certificate" "green"
 
 # generate the server SSC
 log "generating new SSC certificate" "green"
-ssc_output=$(openssl req -config openssl.conf -batch -x509 -nodes -days 7 -key "$KEY_PEM" -out "$SERVER_PEM" -verbose 2>&1)
+ssc_output=$(openssl req -config openssl.conf -batch -x509 -nodes -days 14 -key "$KEY_PEM" -out "$SERVER_PEM" -verbose 2>&1)
 log "openssl req: $ssc_output" "red" 1
 
 SERVER_PEM_STRING=$(cat "$SERVER_PEM")

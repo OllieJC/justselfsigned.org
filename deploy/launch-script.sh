@@ -63,7 +63,7 @@ sed -i 's/^#LoadModule http2_module modules\/mod_http2.so/LoadModule http2_modul
 /opt/bitnami/ctlscript.sh restart apache
 
 cd /opt/bitnami
-git clone git@github.com:OllieJC/justselfsigned.org.git
+git clone https://github.com/OllieJC/justselfsigned.org.git
 cd /opt/bitnami/justselfsigned.org/deploy/
 python3 1-generate-instance-files.py
 rm /opt/bitnami/justselfsigned.org/website/*.tmpl

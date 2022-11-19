@@ -2,6 +2,7 @@
 
 import markdown
 import re
+import os
 
 files = {
     "server.pem": [],
@@ -13,8 +14,9 @@ files = {
 }
 
 for f in files:
-    with open(f) as file:
-        files[f] = [line.rstrip() for line in file]
+    if os.path.exists(f):
+        with open(f) as file:
+            files[f] = [line.rstrip() for line in file]
 
 server_pem = "\n".join(files["server.pem"])
 key_pem = "\n".join(files["key.pem"])
