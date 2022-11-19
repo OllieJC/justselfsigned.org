@@ -1,0 +1,173 @@
+/*@media (prefers-color-scheme: dark) {
+  html {
+    background-color: black !important;
+    color: white !important;
+  }
+  a { color: white !important; }
+  svg { fill: white !important; }
+  footer { border-top: 1px solid lightgrey !important; }
+
+  .collapsible {
+    background-color: #151515 !important;
+    background-image: url(/assets/images/square-plus-solid_white.png) !important;
+    color: #fff !important;
+  }
+  .active {
+    background-image: url(/assets/images/square-minus-regular_white.png) !important;
+  }
+  .active, .collapsible:hover {
+    background-color: #000 !important;
+    color: #fff !important;
+  }
+  .collapsible-content {
+   background-color: #151515 !important;
+  }
+}*/
+
+header h1 {
+  margin: 0 !important;
+  padding: 1em;
+}
+
+html {
+  font-family: 'Open Sans', sans-serif;
+  background-color: white;
+  color: black;
+}
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
+header,
+footer {
+  text-align: center;
+}
+
+header,
+article,
+footer {
+  margin: 0 1em;
+  max-width: 650px;
+}
+
+article {
+  padding-bottom: 2em;
+}
+
+footer {
+  padding-top: calc(1em - 1px);
+  border-top: 1px solid black;
+}
+
+.wrapper {
+  min-height: 100%;
+  margin-bottom: -3.5em;
+}
+footer, .push {
+  height: 2.5em;
+}
+
+.main-logo {
+  width: 50%;
+  min-width: 200px;
+  height: auto;
+}
+
+@media only screen and (min-width: 500px) {
+  header,
+  article,
+  footer {
+    width: 35%;
+    min-width: 475px;
+    margin: 0 auto;
+  }
+}
+
+a { color: black; }
+a:hover { text-decoration: none; }
+
+svg {
+  height: 1em;
+  width: auto;
+  fill: black;
+}
+
+footer svg {
+  height: 0.75em;
+}
+
+@font-face {
+  font-family: 'Open Sans';
+  font-style: italic;
+  font-weight: 400;
+  font-stretch: 100%;
+  src: url('/assets/fonts/OpenSans-Italic.woff2') format('woff2'),
+       url('/assets/fonts/OpenSans-Italic.ttf') format('ttf');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'Open Sans';
+  font-style: normal;
+  font-weight: 400;
+  font-stretch: 100%;
+  src: url('/assets/fonts/OpenSans-Normal.woff2') format('woff2'),
+       url('/assets/fonts/OpenSans-Normal.ttf') format('ttf');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'Open Sans';
+  font-style: normal;
+  font-weight: 600;
+  font-stretch: 100%;
+  src: url('/assets/fonts/OpenSans-Normal.woff2') format('woff2'),
+       url('/assets/fonts/OpenSans-Normal.ttf') format('ttf');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'Open Sans';
+  font-style: normal;
+  font-weight: 800;
+  font-stretch: 100%;
+  src: url('/assets/fonts/OpenSans-Normal.woff2') format('woff2'),
+       url('/assets/fonts/OpenSans-Normal.ttf') format('ttf');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+/* Style the button that is used to open and close the collapsible content */
+.collapsible {
+ background-color: #ededed;
+ background-image: url(/assets/images/square-plus-solid_black.png);
+ color: #151515;
+ background-repeat: no-repeat;
+ background-position-x: 97%;
+ background-position-y: center;
+ background-size: 8%;
+ cursor: pointer;
+ padding: 1em;
+ margin: 0.5em 0;
+ width: 100%;
+ border: none;
+ text-align: left;
+ outline: none;
+ font-size: 1.2em;
+}
+
+.active {
+ background-image: url(/assets/images/square-minus-regular_black.png);
+}
+.active, .collapsible:hover {
+  background-color: #f8f8f8;
+  color: #000;
+}
+
+/* Style the collapsible content. Note: hidden by default */
+.js-enabled .collapsible-content {
+ padding: 0 1em;
+ display: none;
+ overflow: hidden;
+ background-color: #fff;
+}

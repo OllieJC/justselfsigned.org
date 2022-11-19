@@ -1,7 +1,10 @@
 **/.terraform/
 **/.terraform.lock*
+**/*.tfstate
 **/*.pem
 **/*.key
-terraform/**/*.json
+terraform/google_dns/**/*.json
 **/*.sig
+**/*.aws
 **/generated*
+website/**/*.html
