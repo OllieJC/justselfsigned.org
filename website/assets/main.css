@@ -1,4 +1,4 @@
-/*@media (prefers-color-scheme: dark) {
+@media (prefers-color-scheme: dark) {
   html {
     background-color: black !important;
     color: white !important;
@@ -22,7 +22,7 @@
   .collapsible-content {
    background-color: #151515 !important;
   }
-}*/
+}
 
 header h1 {
   margin: 0 !important;
