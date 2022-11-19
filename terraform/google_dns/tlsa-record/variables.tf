@@ -3,11 +3,8 @@ variable "domain" {
 }
 
 variable "cert_sig" {
-  type = string
-}
-
-variable "existing_sig" {
-  type = string
+  type = list
+  default = []
 }
 
 variable "precert_sig" {

@@ -116,12 +116,19 @@ KEY_PEM_STRING=$(cat "$KEY_PEM")
 
 NEW_TLSA=$(openssl x509 -noout -fingerprint -sha256 -inform pem -in "$SERVER_PEM" | cut -d'=' -f2- | tr -d ':' | tr -d '[:space:]' | tr '[:upper:]' '[:lower:]')
 echo "$NEW_TLSA" > cert.sig
+NEW_TLSA="3 0 1 $NEW_TLSA"
 log "NEW_TLSA: $NEW_TLSA" "red" 1
 
 # get existing TLSA signature, we'll need to remove this AFTER the new instances are deployed and ready
 
-EXISTING_TLSA=$(dig +short "_443._tcp.$PRIMARY_DOMAIN" TLSA | cut -d ' ' -f4- | tr -d '[:space:]' | tr '[:upper:]' '[:lower:]')
-log "EXISTING_TLSA: $EXISTING_TLSA" "red" 1
+EXISTING_TLSAS=$(dig +short "_443._tcp.$PRIMARY_DOMAIN" TLSA | tr '[:upper:]' '[:lower:]')
+EXISTING_TLSAS_STRING=""
+while read -r EXISTING_TLSA; do
+  EXISTING_TLSA="$(echo "$EXISTING_TLSA" | cut -d' ' -f1,2,3) $(echo "$EXISTING_TLSA" | cut -d' ' -f4- | tr -d '[:space:]')"
+  log "EXISTING_TLSA: $EXISTING_TLSA" "red" 1
+  EXISTING_TLSAS_STRING+="${EXISTING_TLSA},"
+done <<< "$EXISTING_TLSAS"
+EXISTING_TLSAS_STRING="${EXISTING_TLSAS_STRING::-1}"
 
 # get current IP addresses from Lightsail instances, we'll remove these eventually
 
@@ -234,8 +241,8 @@ sleep 10s
 cd ../terraform/google_dns/
 terraform init
 terraform apply -auto-approve \
-  -var="cert_sig=${NEW_TLSA}" \
-  -var="existing_sig=${EXISTING_TLSA}" \
+  -var="precert_sig=${NEW_TLSA}" \
+  -var="cert_sig=[\"${NEW_TLSA}\",\"${EXISTING_TLSAS_STRING/,/\",\"}\"]" \
   -var="a_ipv4s=[\"${EXISTING_IPV4S/,/\",\"}\"]" \
   -var="aaaa_ipv6s=[\"${EXISTING_IPV6S/,/\",\"}\"]"
 
@@ -266,14 +273,17 @@ until [ "$(ready_check "$FIRST_IP")" == "YES" ]; do
   sleep 10
 done
 
+log "Sleeping for 1 minute to wait for DNS before setting new IPs" "red" 1
+sleep 60s
+
 terraform apply -auto-approve \
-  -var="cert_sig=${NEW_TLSA}" \
-  -var="existing_sig=${EXISTING_TLSA}" \
+  -var="precert_sig=${NEW_TLSA}" \
+  -var="cert_sig=[\"${NEW_TLSA}\",\"${EXISTING_TLSAS_STRING/,/\",\"}\"]" \
   -var="a_ipv4s=[\"${NEW_IPV4S/,/\",\"}\"]" \
   -var="aaaa_ipv6s=[\"${NEW_IPV6S/,/\",\"}\"]"
 
-log "Sleeping for 10 seconds" "red" 1
-sleep 10s
+log "Sleeping for 2 minutes to wait for DNS before removing old instances" "red" 1
+sleep 120s
 
 while IFS=' ' read -r RAW_INST; do
   INSTANCE=$(echo "$RAW_INST" | tr -d '"' | tr -d '[:space:]' | tr '[:upper:]' '[:lower:]')
@@ -286,5 +296,14 @@ while IFS=' ' read -r RAW_INST; do
     log "aws lightsail delete-instance: $removal" "red" 1
   fi
 done <<< "$EXISTING_INSTANCES_NAMES"
+
+log "Sleeping for 10 seconds" "red" 1
+sleep 10s
+
+terraform apply -auto-approve \
+  -var="precert_sig=${NEW_TLSA}" \
+  -var="cert_sig=[\"${NEW_TLSA}\"]" \
+  -var="a_ipv4s=[\"${NEW_IPV4S/,/\",\"}\"]" \
+  -var="aaaa_ipv6s=[\"${NEW_IPV6S/,/\",\"}\"]"
 
 log "Finished!" "green"

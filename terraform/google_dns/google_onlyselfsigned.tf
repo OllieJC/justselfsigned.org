@@ -9,7 +9,6 @@ module "onlyselfsigned_tlsa" {
   source                 = "./tlsa-record"
   domain                 = "onlyselfsigned.org"
   cert_sig               = var.cert_sig
-  existing_sig           = var.existing_sig
   precert_sig            = var.precert_sig
 }
 

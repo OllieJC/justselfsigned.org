@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+mv /opt/bitnami/apache2/htdocs/index.html /opt/bitnami/apache2/htdocs/bitnami.html
 cat > /opt/bitnami/apache2/htdocs/index.html <<- EOM
 <!doctype html>
 <html lang="en">
@@ -65,10 +66,9 @@ sed -i 's/^#LoadModule http2_module modules\/mod_http2.so/LoadModule http2_modul
 cd /opt/bitnami
 git clone https://github.com/OllieJC/justselfsigned.org.git
 cd /opt/bitnami/justselfsigned.org/deploy/
-python3 1-generate-instance-files.py
+/opt/bitnami/python/bin/python3 -m pip install -r requirements.txt
+/opt/bitnami/python/bin/python3 1-generate-instance-files.py
 rm /opt/bitnami/justselfsigned.org/website/*.tmpl
-
-mv /opt/bitnami/apache2/htdocs/index.html /opt/bitnami/apache2/htdocs/bitnami.html
 
 cp -r /opt/bitnami/justselfsigned.org/website/. /opt/bitnami/apache2/htdocs/
 cp /opt/bitnami/apache2/conf/bitnami/certs/server.pem /opt/bitnami/apache2/htdocs/ssc.pem

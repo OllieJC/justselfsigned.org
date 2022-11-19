@@ -3,12 +3,7 @@ resource "google_dns_record_set" "tlsa-record" {
   name    = "_443._tcp.${var.domain}."
   type    = "TLSA"
   ttl     = "30"
-  rrdatas = chomp(var.existing_sig) == chomp(var.cert_sig) ? [
-    "3 0 1 ${chomp(var.cert_sig)}"
-  ] : [
-    "3 0 1 ${chomp(var.existing_sig)}",
-    "3 0 1 ${chomp(var.cert_sig)}"
-  ]
+  rrdatas = var.cert_sig
 }
 
 resource "google_dns_record_set" "udp-tlsa-record" {
@@ -16,12 +11,7 @@ resource "google_dns_record_set" "udp-tlsa-record" {
   name    = "_443._udp.${var.domain}."
   type    = "TLSA"
   ttl     = "30"
-  rrdatas = chomp(var.existing_sig) == chomp(var.cert_sig) ? [
-    "3 0 1 ${chomp(var.cert_sig)}"
-  ] : [
-    "3 0 1 ${chomp(var.existing_sig)}",
-    "3 0 1 ${chomp(var.cert_sig)}"
-  ]
+  rrdatas = var.cert_sig
 }
 
 resource "google_dns_record_set" "precert-tlsa-record" {

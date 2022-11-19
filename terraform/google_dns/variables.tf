@@ -11,11 +11,7 @@ locals {
 }
 
 variable "cert_sig" {
-  type = string
-}
-
-variable "existing_sig" {
-  type = string
+  type = list
 }
 
 variable "precert_sig" {

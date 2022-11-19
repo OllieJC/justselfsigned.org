@@ -1,6 +1,7 @@
 **/.terraform/
 **/.terraform.lock*
 **/*.tfstate*
+**/*.backup
 **/*.pem
 **/*.key
 terraform/google_dns/**/*.json
