@@ -61,6 +61,11 @@ sed -i 's/DocumentRoot/Protocols h2 h2c http\/1.1\n  H2Direct on\n  DocumentRoot
 
 sed -i 's/^#LoadModule http2_module modules\/mod_http2.so/LoadModule http2_module modules\/mod_http2.so/' /opt/bitnami/apache2/conf/httpd.conf
 
+sed -i 's/<IfModule headers_module>/<IfModule headers_module>\n    Header always set Cross-Origin-Opener-Policy "same-origin"\n    Header always set Cross-Origin-Resource-Policy "same-origin"\n    Header always set Cross-Origin-Embedder-Policy "unsafe-none"\n    Header always set x-Frame-Options "DENY"\n    Header always set X-Content-Type-Options "nosniff"\n    Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains"\n    Header always set Content-Security-Policy "default-src \x27self\x27;"\n    Header always set Referrer-Policy "strict-origin-when-cross-origin"\n    Header always set Permissions-Policy "geolocation=(), microphone=(), camera=(), payment=(), xr-spatial-tracking=(), magnetometer=(), payment=(), sync-xhr=()"\n/' /opt/bitnami/apache2/conf/httpd.conf
+
+printf '\nServerSignature Off\nServerTokens Prod\n' >> /opt/bitnami/apache2/conf/httpd.conf
+sed -i 's/www.example.com/justselfsigned.org/' /opt/bitnami/apache2/conf/httpd.conf
+
 /opt/bitnami/ctlscript.sh restart apache
 
 cd /opt/bitnami
