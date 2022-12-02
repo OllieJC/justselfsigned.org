@@ -96,6 +96,8 @@ fi
 
 log "== 0-new.sh ==" "orange"
 
+exit 1
+
 # generate a new key
 log "generating new private key" "green"
 private_key_output=$(openssl ecparam -name secp384r1 -genkey -noout -out "$KEY_PEM" 2>&1)
