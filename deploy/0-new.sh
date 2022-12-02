@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -euo pipefail
+
 PRIMARY_DOMAIN="justselfsigned.org"
 SERVER_PEM="server.pem"
 KEY_PEM="key.pem"
@@ -99,7 +101,7 @@ log "== 0-new.sh ==" "orange"
 # generate a new key
 log "generating new private key" "green"
 private_key_output=$(openssl ecparam -name secp384r1 -genkey -noout -out "$KEY_PEM" 2>&1)
-log "openssl ecparam: $private_key_output" "red" 1
+# log "openssl ecparam: $private_key_output" "red" 1
 
 # generate the pre-certificate
 log "generating new SSC pre-certificate" "green"
@@ -229,8 +231,8 @@ NEW_IPV6S=$(echo "$NEW_IPV6S" | xargs | tr ' ' ',' | tr -d '[:space:]')
 log "NEW_IPV4S: $NEW_IPV4S" "red" 1
 log "NEW_IPV6S: $NEW_IPV6S" "red" 1
 
-FIRST_IP=$(echo "$NEW_IPV4S" | cut -d',' -f1 | tr -d '[:space:]')
-if [ "$FIRST_IP" == "" ]; then
+LAST_IP=$(echo "$NEW_IPV4S" | tail -n1 | cut -d',' -f1 | tr -d '[:space:]')
+if [ "$LAST_IP" == "" ]; then
   log "Didn't find new IPs, quitting!" "red"
   exit 1
 fi
@@ -262,13 +264,13 @@ ready_check() {
 }
 
 READY_COUNTER=0
-until [ "$(ready_check "$FIRST_IP")" == "YES" ]; do
+until [ "$(ready_check "$LAST_IP")" == "YES" ]; do
   ((READY_COUNTER=READY_COUNTER+1))
   if [ $READY_COUNTER -gt 10 ]; then
-    log "$FIRST_IP wasn't ready in time!" "red"
+    log "$LAST_IP wasn't ready in time!" "red"
     exit 1
   else
-    log "$READY_COUNTER: $FIRST_IP still not ready..." "red" 1
+    log "$READY_COUNTER: $LAST_IP still not ready..." "red" 1
   fi
   sleep 10
 done

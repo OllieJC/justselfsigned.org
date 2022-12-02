@@ -8,8 +8,7 @@ terraform {
 }
 
 provider "google" {
-  credentials = file("justselfsigned-org-4ebae1f1eef1.json")
-
+  # credentials = file("justselfsigned-org-4ebae1f1eef1.json")
   project = "justselfsigned-org"
   region  = "europe-west2"
   zone    = "europe-west2-a"
