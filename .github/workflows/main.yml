@@ -1,0 +1,62 @@
+
+name: Deploy
+
+on:
+  push:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+env:
+  PROJECT_ID: ${{ secrets.GOOGLE_PROJECT_ID }}
+
+jobs:
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+    environment: production
+
+    permissions:
+      contents: 'read'
+      id-token: 'write'
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+    
+    - id: 'aws-auth'
+      name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v1-node16
+      with:
+        role-to-assume: ${{ secrets.AWS_ROLE }}
+        aws-region: 'eu-west-2'
+
+    - name: Test IAM credentials
+      run: aws sts get-caller-identity
+
+    # Configure Workload Identity Federation and generate an access token.
+    - id: 'google-auth'
+      name: 'Authenticate to Google Cloud'
+      uses: 'google-github-actions/auth@v0'
+      with:
+        token_format: 'access_token'
+        workload_identity_provider: 'projects/322453399069/locations/global/workloadIdentityPools/github-id-pool/providers/github-provider'
+        service_account: 'github-service-account@justselfsigned-org.iam.gserviceaccount.com'
+
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v1
+    
+    - name: Set up Python 3.10
+      uses: actions/setup-python@v3
+      with:
+        python-version: "3.10"
+
+    - name: Install apps and run script
+      env:
+        DEBIAN_FRONTEND: noninteractive
+      run: |
+        apt-get update
+        apt-get -yq install jq
+        cd deploy/
+        python3 -m pip install -r requirements.txt
+        chmod +x *.sh
+        ./0-new.sh
