@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-set -euo pipefail
+set -eo pipefail
 
 PRIMARY_DOMAIN="justselfsigned.org"
 SERVER_PEM="server.pem"
