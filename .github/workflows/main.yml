@@ -43,7 +43,7 @@ jobs:
         service_account: 'github-service-account@justselfsigned-org.iam.gserviceaccount.com'
 
     - name: Setup Terraform
-      uses: hashicorp/setup-terraform@v1
+      uses: hashicorp/setup-terraform@v2
     
     - name: Set up Python 3.10
       uses: actions/setup-python@v3
