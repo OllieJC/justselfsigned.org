@@ -59,4 +59,4 @@ jobs:
         cd deploy/
         python3 -m pip install -r requirements.txt
         chmod +x *.sh
-        ./0-new.sh
+        ./0-new.sh -debug
