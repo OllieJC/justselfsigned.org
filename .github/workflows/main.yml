@@ -54,8 +54,8 @@ jobs:
       env:
         DEBIAN_FRONTEND: noninteractive
       run: |
-        apt-get update
-        apt-get -yq install jq
+        sudo apt-get update
+        sudo apt-get -yq install jq
         cd deploy/
         python3 -m pip install -r requirements.txt
         chmod +x *.sh
